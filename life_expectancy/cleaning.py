@@ -3,19 +3,30 @@ Cleaning script
 """
 
 import re
-import argparse
 import pandas as pd
 import numpy as np
 
-def clean_data(country):
-    """Function that will clean, transform and filter (by region, its default being PT) the life_expectancy data."""
-    
-    # Load data
-    dataframe = pd.read_csv("life_expectancy/data/eu_life_expectancy_raw.tsv", sep='\t')
+def main(): #pragma: no cover
+    """Main function."""
 
-    # Initialize some vars
+    file_path = "life_expectancy/data/eu_life_expectancy_raw.tsv"
+    dataframe = load_data(file_path, '\t')
+
     col_to_split = 'unit,sex,age,geo\\time'
     splitted_cols_list = ['unit', 'sex', 'age', 'region']
+    cleaned_df = clean_data(dataframe, col_to_split, splitted_cols_list, "PT")
+
+    save_path = "life_expectancy/data/pt_life_expectancy.csv"
+    save_data(cleaned_df, save_path)
+
+
+def load_data(file_path, sep = ","):
+    """Loads a CSV file given a path and separator."""
+    return pd.read_csv(file_path, sep=sep)
+    
+
+def clean_data(dataframe, col_to_split, splitted_cols_list, country):
+    """Function that will clean, transform and filter (by region, its default being PT) the life_expectancy data."""
     
     # Split first column
     dataframe[splitted_cols_list] = dataframe[col_to_split].str.split(",", expand=True)
@@ -35,9 +46,12 @@ def clean_data(country):
 
     # Filter by region
     dataframe = dataframe[dataframe["region"] == country]
+    
+    return dataframe
 
-    # Save transformed data
-    dataframe.to_csv("life_expectancy/data/pt_life_expectancy.csv", index = False)
+def save_data(dataframe, save_path):
+    """Saves the data inside a pandas dataframe."""
+    dataframe.to_csv(save_path, index = False)
 
 def str_to_float(val):
     """Function to convert a string to float. If invalid returns NaN."""
@@ -45,11 +59,3 @@ def str_to_float(val):
         return float(re.search(r'\d+\.*\d*', val).group(0))
     except (ValueError, AttributeError):
         return np.nan
-
-if __name__ == "__main__":  # pragma: no cover
-
-     # Create argument parser for debugging
-    parser = argparse.ArgumentParser(description='Transformed life expectancy data filtered by country')
-    parser.add_argument('--country', type=str, default='PT', help='Country code to filter')
-    args = parser.parse_args()
-    clean_data(args.country)
