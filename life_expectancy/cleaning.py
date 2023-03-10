@@ -3,29 +3,33 @@ Cleaning script
 """
 
 import re
+from pathlib import Path
+from typing import List
 import pandas as pd
 import numpy as np
 
-def main(): #pragma: no cover
+PROJECT_DIR = Path(__file__).parent
+FILE_PATH = f"{PROJECT_DIR}/data/eu_life_expectancy_raw.tsv"
+SAVE_PATH = "life_expectancy/data/pt_life_expectancy.csv"
+COL_TO_SPLIT = 'unit,sex,age,geo\\time'
+SPLITTED_COLS_LIST = ['unit', 'sex', 'age', 'region']
+
+
+
+def main(country: str = "PT") -> None: #pragma: no cover
     """Main function."""
 
-    file_path = "life_expectancy/data/eu_life_expectancy_raw.tsv"
-    dataframe = load_data(file_path, '\t')
+    dataframe = load_data(FILE_PATH, '\t')
 
-    col_to_split = 'unit,sex,age,geo\\time'
-    splitted_cols_list = ['unit', 'sex', 'age', 'region']
-    cleaned_df = clean_data(dataframe, col_to_split, splitted_cols_list, "PT")
+    cleaned_df = clean_data(dataframe, COL_TO_SPLIT, SPLITTED_COLS_LIST, country)
 
-    save_path = "life_expectancy/data/pt_life_expectancy.csv"
-    save_data(cleaned_df, save_path)
+    save_data(cleaned_df, SAVE_PATH)
 
-
-def load_data(file_path, sep = ","):
+def load_data(file_path: str, sep: str = ",") -> pd.DataFrame:
     """Loads a CSV file given a path and separator."""
     return pd.read_csv(file_path, sep=sep)
     
-
-def clean_data(dataframe, col_to_split, splitted_cols_list, country):
+def clean_data(dataframe: pd.DataFrame, col_to_split: str, splitted_cols_list: List[str], country: str) -> pd.DataFrame:
     """Function that will clean, transform and filter (by region, its default being PT) the life_expectancy data."""
     
     # Split first column
@@ -39,7 +43,7 @@ def clean_data(dataframe, col_to_split, splitted_cols_list, country):
     dataframe["year"] = pd.to_numeric(dataframe["year"], errors="coerce").astype(int)
 
     # Apply the str_to_float method and perform data cleaning
-    dataframe['value'] = [str_to_float(val) for val in dataframe['value']]
+    dataframe['value'] = [__str_to_float(val) for val in dataframe["value"]]
 
     # Remove natural NaNs, but also the coerced invalid values from the previous value conversion
     dataframe.dropna(subset=["value"], inplace=True)
@@ -49,11 +53,11 @@ def clean_data(dataframe, col_to_split, splitted_cols_list, country):
     
     return dataframe
 
-def save_data(dataframe, save_path):
+def save_data(dataframe: pd.DataFrame, save_path: str) -> None:
     """Saves the data inside a pandas dataframe."""
     dataframe.to_csv(save_path, index = False)
 
-def str_to_float(val):
+def __str_to_float(val: str) -> float:
     """Function to convert a string to float. If invalid returns NaN."""
     try:
         return float(re.search(r'\d+\.*\d*', val).group(0))
