@@ -4,7 +4,6 @@ Cleaning script
 
 import re
 from pathlib import Path
-from typing import List
 import pandas as pd
 import numpy as np
 
@@ -21,7 +20,7 @@ def main(country: str = "PT") -> None: #pragma: no cover
 
     dataframe = load_data(FILE_PATH, '\t')
 
-    cleaned_df = clean_data(dataframe, COL_TO_SPLIT, SPLITTED_COLS_LIST, country)
+    cleaned_df = clean_data(dataframe, country)
 
     save_data(cleaned_df, SAVE_PATH)
 
@@ -29,15 +28,15 @@ def load_data(file_path: str, sep: str = ",") -> pd.DataFrame:
     """Loads a CSV file given a path and separator."""
     return pd.read_csv(file_path, sep=sep)
     
-def clean_data(dataframe: pd.DataFrame, col_to_split: str, splitted_cols_list: List[str], country: str) -> pd.DataFrame:
+def clean_data(dataframe: pd.DataFrame, country: str) -> pd.DataFrame:
     """Function that will clean, transform and filter (by region, its default being PT) the life_expectancy data."""
     
     # Split first column
-    dataframe[splitted_cols_list] = dataframe[col_to_split].str.split(",", expand=True)
-    dataframe = dataframe.drop(columns=col_to_split)
+    dataframe[SPLITTED_COLS_LIST] = dataframe[COL_TO_SPLIT].str.split(",", expand=True)
+    dataframe = dataframe.drop(columns=COL_TO_SPLIT)
 
     # Unpivot data
-    dataframe = pd.melt(dataframe, id_vars=splitted_cols_list, var_name="year", value_name="value")
+    dataframe = pd.melt(dataframe, id_vars=SPLITTED_COLS_LIST, var_name="year", value_name="value")
     
     # Apply some conversions
     dataframe["year"] = pd.to_numeric(dataframe["year"], errors="coerce").astype(int)
