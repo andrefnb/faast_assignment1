@@ -25,7 +25,7 @@ def run_before_and_after_tests() -> None:
 def eu_life_expectancy_raw() -> pd.DataFrame:
     """Fixture to load the expected output of the cleaning script"""
     dataframe = pd.read_csv(FILE_PATH, sep = "\t")
-    dataframe.to_csv(FIXTURES_DIR / "eu_life_expectancy_raw.csv", index = False)
+    dataframe.to_csv(FIXTURES_DIR / "eu_life_expectancy_raw.tsv", sep = "\t",index = False)
     return dataframe
 
 @pytest.fixture(scope="session")
