@@ -1,3 +1,7 @@
+"""
+Main script for life_expectancy module
+"""
+
 from pathlib import Path
 from life_expectancy.data_loading import load_data, save_data
 from life_expectancy.data_cleaning import clean_data
