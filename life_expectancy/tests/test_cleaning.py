@@ -1,7 +1,7 @@
 """Tests for the cleaning module"""
-import pandas as pd
 from unittest import mock
 from pathlib import Path
+import pandas as pd
 
 from life_expectancy.main import main
 from life_expectancy.data_loading import load_data, save_data

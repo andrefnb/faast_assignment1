@@ -11,6 +11,9 @@ SPLITTED_COLS_LIST = ['unit', 'sex', 'age', 'region']
     
 def clean_data(dataframe: pd.DataFrame, country: str) -> pd.DataFrame:
     """Function that will clean, transform and filter (by region, its default being PT) the life_expectancy data."""
+
+    # Make a copy
+    dataframe = dataframe.copy()
     
     # Split first column
     dataframe[SPLITTED_COLS_LIST] = dataframe[COL_TO_SPLIT].str.split(",", expand=True)
@@ -31,7 +34,7 @@ def clean_data(dataframe: pd.DataFrame, country: str) -> pd.DataFrame:
     # Filter by region
     dataframe = dataframe[dataframe["region"] == country]
     
-    return dataframe
+    return dataframe.reset_index(drop = True)
 
 def __str_to_float(val: str) -> float:
     """Function to convert a string to float. If invalid returns NaN."""
