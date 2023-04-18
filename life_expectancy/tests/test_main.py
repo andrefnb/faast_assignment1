@@ -2,8 +2,12 @@
 from unittest import mock
 from pathlib import Path
 import pandas as pd
+from . import OUTPUT_DIR
 
 from life_expectancy.main import main
+
+FILE_PATH = OUTPUT_DIR / "eu_life_expectancy_raw.tsv"
+SAVE_PATH = OUTPUT_DIR / "pt_life_expectancy.csv"
 
 @mock.patch("life_expectancy.main.load_data")
 @mock.patch("life_expectancy.main.clean_data")
@@ -22,9 +26,9 @@ def test_main(
 
     pt_life_expectancy_actual = main()
 
-    mock_load_data.assert_called_once_with(mock.ANY)
+    mock_load_data.assert_called_once_with(FILE_PATH, '\t')
     mock_clean_data.assert_called_once_with(eu_life_expectancy_raw, "PT")
-    mock_save_data.assert_called_once_with(pt_life_expectancy_expected, mock.ANY)
+    mock_save_data.assert_called_once_with(pt_life_expectancy_expected, SAVE_PATH)
 
     pd.testing.assert_frame_equal(
         pt_life_expectancy_actual, pt_life_expectancy_expected
