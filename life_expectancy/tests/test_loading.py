@@ -1,12 +1,11 @@
 """Tests for the loading/saving module"""
 from unittest import mock
-from pathlib import Path
 import pandas as pd
 
 from life_expectancy.data_loading import load_data, save_data
+from . import FIXTURES_DIR
 
-PROJECT_DIR = Path(__file__).parent.parent
-FILE_PATH = f"{PROJECT_DIR}/data/eu_life_expectancy_raw.tsv"
+FILE_PATH = FIXTURES_DIR / "eu_life_expectancy_raw.tsv"
 
 def test_load_data(eu_life_expectancy_raw):
     """Test for the loading data function"""
