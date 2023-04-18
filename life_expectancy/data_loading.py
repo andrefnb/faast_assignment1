@@ -3,9 +3,10 @@ Loading/saving script
 """
 
 from pathlib import Path
+from typing import Union
 import pandas as pd
 
-def load_data(file_path: Path | str, sep: str = ",") -> pd.DataFrame:
+def load_data(file_path: Union[Path, str], sep: str = ",") -> pd.DataFrame:
     """Loads a CSV file given a path and separator."""
     return pd.read_csv(file_path, sep=sep)
 
