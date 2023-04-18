@@ -2,7 +2,6 @@
 from unittest import mock
 from pathlib import Path
 import pandas as pd
-import pytest
 
 from life_expectancy.data_loading import load_data, save_data
 

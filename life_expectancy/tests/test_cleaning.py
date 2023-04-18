@@ -1,6 +1,4 @@
 """Tests for the cleaning module"""
-from unittest import mock
-from pathlib import Path
 import pandas as pd
 
 from life_expectancy.data_cleaning import clean_data

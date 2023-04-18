@@ -1,10 +1,9 @@
 """Tests for the main module"""
 from unittest import mock
-from pathlib import Path
 import pandas as pd
-from . import OUTPUT_DIR
 
 from life_expectancy.main import main
+from . import OUTPUT_DIR
 
 FILE_PATH = OUTPUT_DIR / "eu_life_expectancy_raw.tsv"
 SAVE_PATH = OUTPUT_DIR / "pt_life_expectancy.csv"
