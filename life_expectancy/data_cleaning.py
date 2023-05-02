@@ -23,7 +23,7 @@ def clean_data(dataframe: pd.DataFrame, country: str) -> pd.DataFrame:
     dataframe = pd.melt(dataframe, id_vars=SPLITTED_COLS_LIST, var_name="year", value_name="value")
     
     # Apply some conversions
-    dataframe["year"] = pd.to_numeric(dataframe["year"], errors="coerce").astype(int)
+    dataframe["year"] = pd.to_numeric(dataframe["year"], errors="coerce").astype("int64")
 
     # Apply the str_to_float method and perform data cleaning
     dataframe['value'] = [__str_to_float(val) for val in dataframe["value"]]
