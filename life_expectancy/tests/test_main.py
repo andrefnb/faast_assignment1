@@ -1,6 +1,7 @@
 """Tests for the main module"""
 from unittest import mock
 import pandas as pd
+from life_expectancy.region import Region
 
 from life_expectancy.main import main
 from . import OUTPUT_DIR
@@ -25,8 +26,8 @@ def test_main(
 
     pt_life_expectancy_actual = main()
 
-    mock_load_data.assert_called_once_with(FILE_PATH, '\t')
-    mock_clean_data.assert_called_once_with(eu_life_expectancy_raw, "PT")
+    mock_load_data.assert_called_once_with(mock.ANY, FILE_PATH, '\t')
+    mock_clean_data.assert_called_once_with(eu_life_expectancy_raw, Region.PT)
     mock_save_data.assert_called_once_with(pt_life_expectancy_expected, SAVE_PATH)
 
     pd.testing.assert_frame_equal(

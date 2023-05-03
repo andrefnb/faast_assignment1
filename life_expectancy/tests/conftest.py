@@ -7,6 +7,7 @@ from . import FIXTURES_DIR, OUTPUT_DIR
 
 PROJECT_DIR = Path(__file__).parent.parent
 EU_RAW_FILE_PATH = FIXTURES_DIR / "eu_life_expectancy_raw.tsv"
+EU_RAW_JSON_FILE_PATH = FIXTURES_DIR / "eu_life_expectancy_raw.json"
 PT_EXPECTED_FILE_PATH = FIXTURES_DIR / "pt_life_expectancy_expected.csv"
 
 @pytest.fixture(autouse=True)
@@ -27,7 +28,18 @@ def eu_life_expectancy_raw() -> pd.DataFrame:
     return dataframe
 
 @pytest.fixture(scope="session")
+def eu_life_expectancy_raw_json() -> pd.DataFrame:
+    """Fixture to load the expected output of the cleaning script"""
+    dataframe = pd.read_json(EU_RAW_JSON_FILE_PATH)
+    return dataframe
+
+@pytest.fixture(scope="session")
 def pt_life_expectancy_expected() -> pd.DataFrame:
     """Fixture to create the filtered expectancy dataframe"""
     dataframe = pd.read_csv(PT_EXPECTED_FILE_PATH)
     return dataframe
+
+@pytest.fixture(scope="session")
+def all_regions_expected() -> pd.DataFrame:
+    """Fixture to create the regions list"""
+    return ["EN", "PT"]

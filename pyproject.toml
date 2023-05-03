@@ -26,5 +26,7 @@ fail_under = 80
 [tool.pylint.'MESSAGES CONTROL']
 disable = [
     "trailing-whitespace",
-    "line-too-long"
+    "line-too-long",
+    "too-few-public-methods",
+    "unspecified-encoding"
 ]

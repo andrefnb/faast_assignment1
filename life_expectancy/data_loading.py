@@ -6,9 +6,11 @@ from pathlib import Path
 from typing import Union
 import pandas as pd
 
-def load_data(file_path: Union[Path, str], sep: str = ",") -> pd.DataFrame:
-    """Loads a CSV file given a path and separator."""
-    return pd.read_csv(file_path, sep=sep)
+from life_expectancy.loading_strategy import Strategy
+
+def load_data(strategy: Strategy,file_path: Union[Path, str], sep: str = ",") -> pd.DataFrame:
+    """Loads data given a path."""
+    return strategy.load_data(file_path, sep)
 
 def save_data(dataframe: pd.DataFrame, save_path: str) -> None:
     """Saves the data inside a pandas dataframe."""

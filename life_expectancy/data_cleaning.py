@@ -5,11 +5,12 @@ Cleaning script
 import re
 import pandas as pd
 import numpy as np
+from life_expectancy.region import Region
 
 COL_TO_SPLIT = 'unit,sex,age,geo\\time'
 SPLITTED_COLS_LIST = ['unit', 'sex', 'age', 'region']
     
-def clean_data(dataframe: pd.DataFrame, country: str) -> pd.DataFrame:
+def clean_data(dataframe: pd.DataFrame, country: Region) -> pd.DataFrame:
     """Function that will clean, transform and filter (by region, its default being PT) the life_expectancy data."""
 
     # Make a copy
@@ -32,7 +33,7 @@ def clean_data(dataframe: pd.DataFrame, country: str) -> pd.DataFrame:
     dataframe.dropna(subset=["value"], inplace=True)
 
     # Filter by region
-    dataframe = dataframe[dataframe["region"] == country]
+    dataframe = dataframe[dataframe["region"] == country.value]
     
     return dataframe.reset_index(drop = True)
 
