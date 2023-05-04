@@ -3,7 +3,7 @@ from unittest import mock
 import pandas as pd
 
 from life_expectancy.data_loading import load_data, save_data
-from life_expectancy.loading_strategy import ConcreteStrategyCSV, ConcreteStrategyCompactedJSON
+from life_expectancy.loading_strategy import ConcreteLoadingStrategyCSV, ConcreteLoadingStrategyCompactedJSON
 from . import FIXTURES_DIR
 
 FILE_CSV_PATH = FIXTURES_DIR / "eu_life_expectancy_raw.tsv"
@@ -12,7 +12,7 @@ FILE_COMPACTED_JSON_PATH = FIXTURES_DIR / "eurostat_life_expect.zip"
 def test_load_data_csv(eu_life_expectancy_raw_csv):
     """Test for the loading data function"""
 
-    strategy = ConcreteStrategyCSV()
+    strategy = ConcreteLoadingStrategyCSV()
     dataframe = load_data(strategy, FILE_CSV_PATH, "\t")
     pd.testing.assert_frame_equal(
         dataframe, eu_life_expectancy_raw_csv
@@ -21,7 +21,7 @@ def test_load_data_csv(eu_life_expectancy_raw_csv):
 def test_load_data_compacted_json(eu_life_expectancy_raw_json):
     """Test for the loading data function"""
 
-    strategy = ConcreteStrategyCompactedJSON()
+    strategy = ConcreteLoadingStrategyCompactedJSON()
     dataframe = load_data(strategy, FILE_COMPACTED_JSON_PATH)
     pd.testing.assert_frame_equal(
         dataframe, eu_life_expectancy_raw_json

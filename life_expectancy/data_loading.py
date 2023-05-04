@@ -6,9 +6,9 @@ from pathlib import Path
 from typing import Union
 import pandas as pd
 
-from life_expectancy.loading_strategy import Strategy
+from life_expectancy.loading_strategy import LoadingStrategy
 
-def load_data(strategy: Strategy,file_path: Union[Path, str], sep: str = ",") -> pd.DataFrame:
+def load_data(strategy: LoadingStrategy, file_path: Union[Path, str], sep: str = ",") -> pd.DataFrame:
     """Loads data given a path."""
     return strategy.load_data(file_path, sep)
 

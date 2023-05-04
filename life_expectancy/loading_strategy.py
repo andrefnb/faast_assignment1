@@ -4,7 +4,6 @@ Python file containing the loading strategy pattern.
 
 from pathlib import Path
 from typing import Union
-from typing import List
 import zipfile
 from abc import ABC, abstractmethod
 import pandas as pd
@@ -14,36 +13,27 @@ DATA_PATH = PROJECT_DIR / "data"
 DECOMPRESSED_PATH = DATA_PATH / "decompressed"
 DECOMPRESSED_FILE_PATH = DECOMPRESSED_PATH / "eurostat_life_expect.json"
 
-class Strategy(ABC):
-    """
-    The Strategy interface declares operations common to all supported versions
-    of some algorithm.
-
-    The Context uses this interface to call the algorithm defined by Concrete
-    Strategies.
-    """
+class LoadingStrategy(ABC):
+    """Loading strategy abstract class"""
 
     @abstractmethod
-    def load_data(self, file_path: Union[Path, str], sep: str = ","):
+    def load_data(self, file_path: Union[Path, str], sep: str = ",") -> pd.DataFrame:
         """Definition of the data loading function target of the strategy pattern"""
 
-
-class ConcreteStrategyCSV(Strategy):
+class ConcreteLoadingStrategyCSV(LoadingStrategy):
     """
     Concrete strategy class for data loading in the CSV format
     """
-    def load_data(self, file_path: Union[Path, str], sep: str = ",") -> List:
+    def load_data(self, file_path: Union[Path, str], sep: str = ",") -> pd.DataFrame:
         """Loads a CSV file given a path and separator."""
         return pd.read_csv(file_path, sep=sep)
     
-class ConcreteStrategyCompactedJSON(Strategy):
+class ConcreteLoadingStrategyCompactedJSON(LoadingStrategy):
     """
     Concrete strategy class for data loading in the CSV format
     """
-    def load_data(self, file_path: Union[Path, str], sep: str = None) -> List:
+    def load_data(self, file_path: Union[Path, str], sep: str = None) -> pd.DataFrame:
         """Loads a CSV file given a path and separator."""
-        # data_decompressed = zlib.decompress()
-        # return pd.read_json(file_path)
 
         with zipfile.ZipFile(file_path, "r") as zip_ref:
             zip_ref.extractall(DECOMPRESSED_PATH)
