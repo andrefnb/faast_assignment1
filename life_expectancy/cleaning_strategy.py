@@ -52,7 +52,7 @@ class ConcreteCleaningStrategyCSV(CleaningStrategy):
     
 class ConcreteCleaningStrategyCompactedJSON(CleaningStrategy):
     """
-    Concrete strategy class for data loading in the CSV format
+    Concrete strategy class for data loading in the JSON format
     """
     def clean_data(self, dataframe: pd.DataFrame, country: Region) -> pd.DataFrame:
         """Cleans a JSON file given a dataframe and the country enum to filter."""

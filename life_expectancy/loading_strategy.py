@@ -30,7 +30,7 @@ class ConcreteLoadingStrategyCSV(LoadingStrategy):
     
 class ConcreteLoadingStrategyCompactedJSON(LoadingStrategy):
     """
-    Concrete strategy class for data loading in the CSV format
+    Concrete strategy class for data loading in the JSON format
     """
     def load_data(self, file_path: Union[Path, str], sep: str = None) -> pd.DataFrame:
         """Loads a CSV file given a path and separator."""
